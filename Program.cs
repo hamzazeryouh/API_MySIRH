@@ -1,7 +1,9 @@
 using API_MySIRH.Data;
 using API_MySIRH.Helpers;
 using API_MySIRH.Interfaces;
+using API_MySIRH.Interfaces.InterfaceServices.MDM;
 using API_MySIRH.Repositories;
+using API_MySIRH.Repositories.MDM;
 using API_MySIRH.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -31,7 +33,27 @@ builder.Services.AddScoped<IMemoService, MemoService>();
 builder.Services.AddScoped<IMemoRepository, MemoRepository>();
 builder.Services.AddScoped<ICollaborateurRepository, CollaborateurRepository>();
 builder.Services.AddScoped<ICollaborateurService, CollaborateurService>();
+builder.Services.AddScoped<ICandidatRepository, CandidatRepository>();
+builder.Services.AddScoped<ICandidatService, CandidatService>();
 
+// Add Poste Services and Repository inject
+builder.Services.AddScoped<IPosteRepository, PosteRepository>();
+builder.Services.AddScoped<IPosteService, PosteService>();
+
+// Add PosteNiveau Services and Repository inject
+builder.Services.AddScoped<IPosteNiveauRepository, PosteNiveauRepository>();
+builder.Services.AddScoped<IPosteNiveauService, PosteNiveauService>();
+// Add Site Services and Repository inject
+builder.Services.AddScoped<ISiteRepository, SiteRepository>();
+builder.Services.AddScoped<ISiteService, SiteService>();
+
+// Add SkillCenter Services and Repository inject
+builder.Services.AddScoped<ISkillCenterRepository, SkillCenterRepository>();
+builder.Services.AddScoped<ISkillCenterService, SkillCenterService>();
+
+// Add TypeContrat Services and Repository inject
+builder.Services.AddScoped<ITypeContratRepository, TypeContratRepository>();
+builder.Services.AddScoped<ITypeContratService, TypeContratService>();
 
 //DBContext Config 
 builder.Services.AddDbContext<DataContext>(options =>

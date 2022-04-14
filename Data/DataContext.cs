@@ -16,6 +16,10 @@ namespace API_MySIRH.Data
         public DbSet<Site> Sites { get; set; } = null!;
         public DbSet<SkillCenter> SkillCenters { get; set; } = null!;
         public DbSet<Collaborateur> Collaborateurs { get; set; } = null!;
+        public DbSet<Candidat> Candidats { get; set; } = null!;
+        public DbSet<TypeContrat> TypeContrats { get; set; } = null!;
+
+
 
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
