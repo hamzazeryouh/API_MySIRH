@@ -5,7 +5,10 @@ using API_MySIRH.Interfaces.InterfaceServices.MDM;
 using API_MySIRH.Repositories;
 using API_MySIRH.Repositories.MDM;
 using API_MySIRH.Services;
+using ApiMultiPartFormData;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 
 var myAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
@@ -20,10 +23,20 @@ builder.Services.AddControllers();
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
 );
+builder.Services.AddControllers(options =>
+{
+    options.InputFormatters.Add(new MultipartFormDataFormatter());
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
+builder.Services.Configure<FormOptions>(o => {
+    o.ValueLengthLimit = int.MaxValue;
+    o.MultipartBodyLengthLimit = int.MaxValue;
+    o.MemoryBufferThreshold = int.MaxValue;
+});
 //Add IoC Mapping 
 builder.Services.AddScoped<IToDoItemsRepository, ToDoItemsRepository>();
 builder.Services.AddScoped<IToDoListRepository, ToDoListRepository>();
@@ -35,6 +48,8 @@ builder.Services.AddScoped<ICollaborateurRepository, CollaborateurRepository>();
 builder.Services.AddScoped<ICollaborateurService, CollaborateurService>();
 builder.Services.AddScoped<ICandidatRepository, CandidatRepository>();
 builder.Services.AddScoped<ICandidatService, CandidatService>();
+
+
 
 // Add Poste Services and Repository inject
 builder.Services.AddScoped<IPosteRepository, PosteRepository>();
@@ -83,6 +98,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseStaticFiles();
+app.UseStaticFiles(new StaticFileOptions()
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"StaticFiles")),
+    RequestPath = new PathString("/StaticFiles")
+});
 
 app.UseHttpsRedirection();
 

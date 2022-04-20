@@ -2,7 +2,7 @@
 using API_MySIRH.DTOs;
 using API_MySIRH.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-
+using System.Net.Http.Headers;
 
 namespace API_MySIRH.Controllers
 {
@@ -66,5 +66,65 @@ namespace API_MySIRH.Controllers
             await this._CandidatService.DeleteCandidat(id);
             return NoContent();
         }
+
+
+
+        [HttpGet("ExportExcel")]
+        public async Task<FileStreamResult> ExportExcel()
+        {
+            var file = await this._CandidatService.ExportExcel();
+           return file;
+        }
+
+        [HttpPost("ImportExcel")]
+        public async Task<IActionResult> ImportExcel(IFormFile Excel)
+        {
+            try
+            {
+                var file = await this._CandidatService.ImportExcel(Excel);
+              return  Ok(file);
+            }
+            catch(Exception ex)
+            {
+             return   BadRequest(ex);
+            }
+
+
+        }
+
+        [HttpPost("Upload"), DisableRequestSizeLimit]
+        public IActionResult Upload()
+        {
+            try
+            {
+                var file = Request.Form.Files[0];
+                var folderName = Path.Combine("Resources", "Images");
+                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+
+                if (file.Length > 0)
+                {
+                    var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                    var fullPath = Path.Combine(pathToSave, fileName);
+                    var dbPath = Path.Combine(folderName, fileName);
+
+                    using (var stream = new FileStream(fullPath, FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+                    }
+
+                    return Ok(new { dbPath });
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex}");
+            }
+        }
+
+
     }
 }

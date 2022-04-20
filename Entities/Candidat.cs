@@ -23,6 +23,8 @@ namespace API_MySIRH.Entities
         public PosteNiveau? Niveau { get; set; }
         public string? Commentaire { get; set; }
 
+        public string? ImageUrl { get; set; }
+
 
 
 

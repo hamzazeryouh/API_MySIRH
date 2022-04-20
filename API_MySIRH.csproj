@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="ApiMultipartFormDataFormatter" Version="3.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+    <PackageReference Include="EPPlus" Version="6.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.2" />
     <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="6.0.2" />
@@ -32,6 +34,8 @@
     <Folder Include="Data\Migrations\" />
     <Folder Include="Errors\" />
     <Folder Include="Logger\" />
+    <Folder Include="StaticFiles\" />
+    <Folder Include="Resources\Images\" />
   </ItemGroup>
 
 </Project>
