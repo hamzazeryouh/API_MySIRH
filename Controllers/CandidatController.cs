@@ -77,11 +77,14 @@ namespace API_MySIRH.Controllers
         }
 
         [HttpPost("ImportExcel")]
-        public async Task<IActionResult> ImportExcel(IFormFile Excel)
+        public async Task<IActionResult> ImportExcel()
         {
+            var files = Request.Form.Files[0];
+            if (!this.CheckIfExcelFile(files) || files.Length==null) return BadRequest();
+
             try
             {
-                var file = await this._CandidatService.ImportExcel(Excel);
+                var file = await this._CandidatService.ImportExcel(files);
               return  Ok(file);
             }
             catch(Exception ex)
@@ -92,38 +95,48 @@ namespace API_MySIRH.Controllers
 
         }
 
-        [HttpPost("Upload"), DisableRequestSizeLimit]
-        public IActionResult Upload()
+        private bool CheckIfExcelFile(IFormFile file)
         {
-            try
-            {
-                var file = Request.Form.Files[0];
-                var folderName = Path.Combine("Resources", "Images");
-                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
-
-                if (file.Length > 0)
-                {
-                    var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-                    var fullPath = Path.Combine(pathToSave, fileName);
-                    var dbPath = Path.Combine(folderName, fileName);
-
-                    using (var stream = new FileStream(fullPath, FileMode.Create))
-                    {
-                        file.CopyTo(stream);
-                    }
-
-                    return Ok(new { dbPath });
-                }
-                else
-                {
-                    return BadRequest();
-                }
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex}");
-            }
+            var extension = "." + file.FileName.Split('.')[file.FileName.Split('.').Length - 1];
+            return (extension == ".xlsx" || extension == ".xls"); // Change the extension based on your need
         }
+
+        [HttpPost("UploadImage/{id}"), DisableRequestSizeLimit]
+        public async Task<IActionResult> Uploadimage(int id)
+        {
+            var file = Request.Form.Files[0];
+            var extension = "." + file.FileName.Split('.')[file.FileName.Split('.').Length - 1];
+            if (extension == ".jpg"  || extension == ".JPEG"|| extension == ".png")
+            {
+                var candidat = await _CandidatService.Upload(file, id);
+                return Ok(candidat);
+            }
+            return BadRequest();
+           
+        }
+
+        [HttpPost("UploadCV/{id}"), DisableRequestSizeLimit]
+        public async Task<IActionResult> Uploadcv(int id)
+        {
+            var file = Request.Form.Files[0];
+            var extension = "." + file.FileName.Split('.')[file.FileName.Split('.').Length - 1];
+            if (extension == ".pdf")
+            {
+                var candidat = await _CandidatService.Upload(file, id);
+                return Ok(candidat);
+            }
+            return BadRequest();
+
+        }
+        [HttpPost("GetFile")]
+        public async Task<IActionResult> GetFile(string uniquename)
+        {
+           return await _CandidatService.GetFile(uniquename);
+
+        }
+
+
+        
 
 
     }

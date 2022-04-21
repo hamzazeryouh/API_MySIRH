@@ -19,8 +19,9 @@ namespace API_MySIRH.Interfaces
 
         Task<IEnumerable<CandidatDTO>> ImportExcel(IFormFile Excel);
 
-        Task<bool> UploadImage(IFormFile Image);
+        Task<CandidatDTO> Upload(IFormFile Image,int id);
 
-        Task<bool> UploadCV(IFormFile Cv);
+        Task<FileStreamResult> GetFile (string UniqueName);
+
     }
 }

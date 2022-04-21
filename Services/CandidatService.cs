@@ -11,6 +11,7 @@ namespace API_MySIRH.Services
     using OfficeOpenXml;
     using OfficeOpenXml.Style;
     using System.Drawing;
+    using System.Net.Http.Headers;
 
     public class CandidatService: ICandidatService
     {
@@ -141,16 +142,6 @@ namespace API_MySIRH.Services
                 const int startRow = 3;
                 var row = startRow;
 
-                //worksheet.Cells["A1"].Value = "Sample";
-                //using (var r = worksheet.Cells["A1:O1"])
-                //{
-                //    r.Merge = true;
-                //    r.Style.Font.Color.SetColor(Color.White);
-                //    r.Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.CenterContinuous;
-                //    r.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                //    r.Style.Fill.BackgroundColor.SetColor(Color.FromArgb(23, 55, 93));
-                //}
-
 
                 worksheet.Cells["A4"].Value = "Nom";
                 worksheet.Cells["B4"].Value = "Prenom";
@@ -210,14 +201,60 @@ namespace API_MySIRH.Services
             };
 
         }
-        public Task<bool> UploadCV(IFormFile Cv)
+        public async Task<CandidatDTO> Upload(IFormFile file,  int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var folderName = Path.Combine("Resources", "Images");
+                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+
+                if (file.Length > 0)
+                {
+                    var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                    var fullPath = Path.Combine(pathToSave, id + Guid.NewGuid().ToString() + fileName);
+                    var dbPath = Path.Combine(folderName, id + Guid.NewGuid().ToString() + fileName);
+
+                    using (var stream = new FileStream(fullPath, FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+                    }
+
+                    var candidat = await _CandidatRepository.GetCandidat(id);
+                      candidat.ImageUrl = dbPath;
+                    var save = _CandidatRepository.UpdateCandidat(id, candidat);
+
+                    return _mapper.Map<Candidat,CandidatDTO>(candidat);
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+                
+            }
         }
 
-        public Task<bool> UploadImage(IFormFile Image)
+        public async Task<FileStreamResult> GetFile(string UniqueName)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var path = Directory.GetCurrentDirectory() +"/"+ UniqueName;
+                var stream = new FileStream(path, FileMode.Open);
+                stream.Position = 0;
+                return new FileStreamResult(stream, "image/png")
+                {
+                    FileDownloadName = UniqueName,
+                };
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

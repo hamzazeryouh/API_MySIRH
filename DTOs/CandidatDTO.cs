@@ -30,5 +30,7 @@ namespace API_MySIRH.DTOs
         public int PosteId { get; set; }
         public int PosteNiveauId { get; set; }
         public string? Commentaire { get; set; }
+
+        public string? ImageUrl { get; set; }
     }
 }
