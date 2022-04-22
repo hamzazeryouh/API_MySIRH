@@ -8,7 +8,6 @@ namespace API_MySIRH.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize()]
     public class CandidatController : ControllerBase
     {
         private readonly ICandidatService _CandidatService;
