@@ -23,6 +23,9 @@ namespace API_MySIRH.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("CVUrl")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Civilite")
                         .HasColumnType("TEXT");
 

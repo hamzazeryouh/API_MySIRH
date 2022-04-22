@@ -53,6 +53,11 @@ namespace API_MySIRH.Services
         }
         public async Task UpdateCandidat(int id, CandidatDTO Candidat)
         {
+
+            var oldCandidat=await   this._CandidatRepository.GetCandidat(id);
+            Candidat.CVUrl = oldCandidat.CVUrl;
+            Candidat.ImageUrl = oldCandidat.ImageUrl;
+
             await this._CandidatRepository.UpdateCandidat(id, this._mapper.Map<Candidat>(Candidat));
         }
         public async Task<IEnumerable<CandidatDTO>> ImportExcel(IFormFile Excel)
@@ -201,27 +206,29 @@ namespace API_MySIRH.Services
             };
 
         }
-        public async Task<CandidatDTO> Upload(IFormFile file,  int id)
+        public async Task<CandidatDTO> Upload(IFormFile file,  int id, bool cv)
         {
             try
             {
+                var extension = "." + file.FileName.Split('.')[file.FileName.Split('.').Length - 1];
                 var folderName = Path.Combine("Resources", "Images");
                 var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
 
                 if (file.Length > 0)
                 {
-                    var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-                    var fullPath = Path.Combine(pathToSave, id + Guid.NewGuid().ToString() + fileName);
-                    var dbPath = Path.Combine(folderName, id + Guid.NewGuid().ToString() + fileName);
+                    var fileName = id + Guid.NewGuid().ToString();
+                    var fullPath = Path.Combine(folderName+"\\"+ fileName + extension);
+                    var dbPath = Path.Combine(fileName+ extension);
 
                     using (var stream = new FileStream(fullPath, FileMode.Create))
                     {
                         file.CopyTo(stream);
                     }
-
-                    var candidat = await _CandidatRepository.GetCandidat(id);
-                      candidat.ImageUrl = dbPath;
+                    Candidat candidat = await _CandidatRepository.GetCandidat(id);
+                    // cv ? candidat.CVUrl = dbPath:candidat.ImageUrl = dbPath;
+                    _ = cv? candidat.CVUrl = dbPath : candidat.ImageUrl = dbPath;
                     var save = _CandidatRepository.UpdateCandidat(id, candidat);
+
 
                     return _mapper.Map<Candidat,CandidatDTO>(candidat);
                 }
@@ -242,10 +249,13 @@ namespace API_MySIRH.Services
         {
             try
             {
-                var path = Directory.GetCurrentDirectory() +"/"+ UniqueName;
-                var stream = new FileStream(path, FileMode.Open);
-                stream.Position = 0;
-                return new FileStreamResult(stream, "image/png")
+                var extension = "." + UniqueName.Split('.')[UniqueName.Split('.').Length - 1];
+                var path = Directory.GetCurrentDirectory() + "\\Resources\\Images\\" + UniqueName;
+                var image= System.IO.File.OpenRead(path);
+               // return File(image, "image/jpeg");
+                //var stream = new FileStream(path, FileMode.Open);
+               // stream.Position = 0;
+                return new FileStreamResult(image, "image/"+ extension)
                 {
                     FileDownloadName = UniqueName,
                 };

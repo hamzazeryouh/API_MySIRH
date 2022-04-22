@@ -49,9 +49,9 @@ namespace API_MySIRH.Controllers
             {
                 await this._CandidatService.UpdateCandidat(id, CandidatDTO);
             }
-            catch
+            catch(Exception ex)
             {
-                throw;
+                throw ex;
             }
 
             return NoContent();
@@ -106,9 +106,9 @@ namespace API_MySIRH.Controllers
         {
             var file = Request.Form.Files[0];
             var extension = "." + file.FileName.Split('.')[file.FileName.Split('.').Length - 1];
-            if (extension == ".jpg"  || extension == ".JPEG"|| extension == ".png")
+            if (extension == ".jpg"  || extension == ".JPEG"|| extension == ".png"|| extension==  ".jfif")
             {
-                var candidat = await _CandidatService.Upload(file, id);
+                var candidat = await _CandidatService.Upload(file, id,false);
                 return Ok(candidat);
             }
             return BadRequest();
@@ -118,25 +118,27 @@ namespace API_MySIRH.Controllers
         [HttpPost("UploadCV/{id}"), DisableRequestSizeLimit]
         public async Task<IActionResult> Uploadcv(int id)
         {
+
             var file = Request.Form.Files[0];
             var extension = "." + file.FileName.Split('.')[file.FileName.Split('.').Length - 1];
             if (extension == ".pdf")
             {
-                var candidat = await _CandidatService.Upload(file, id);
+                var candidat = await _CandidatService.Upload(file, id,true);
                 return Ok(candidat);
             }
             return BadRequest();
 
         }
-        [HttpPost("GetFile")]
-        public async Task<IActionResult> GetFile(string uniquename)
-        {
-           return await _CandidatService.GetFile(uniquename);
 
+
+        [HttpGet("GetFile/{uniquename}")]
+        public async Task<IActionResult> GetCandidat(string uniquename)
+        {
+            return await _CandidatService.GetFile(uniquename);
         }
 
 
-        
+
 
 
     }

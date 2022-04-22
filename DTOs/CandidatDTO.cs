@@ -32,5 +32,7 @@ namespace API_MySIRH.DTOs
         public string? Commentaire { get; set; }
 
         public string? ImageUrl { get; set; }
+
+        public string? CVUrl { get; set; }
     }
 }
