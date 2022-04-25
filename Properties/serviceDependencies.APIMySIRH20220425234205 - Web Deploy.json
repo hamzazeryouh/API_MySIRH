@@ -1,0 +1,21 @@
+{
+  "dependencies": {
+    "apis1": {
+      "apiEndpoint": "https://apimysirh.azure-api.net/MYSIRH",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.ApiManagement/service/APiMYSIRH/apis/APIMySIRH",
+      "type": "apis.azure"
+    },
+    "secrets1": {
+      "secretStore": "AzureAppSettings",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.KeyVault/vaults/APIMySIRHvault",
+      "type": "secrets.keyVault",
+      "connectionId": "VaultUri"
+    },
+    "mssql2": {
+      "secretStore": "AzureAppSettings",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourcegroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/mysirh/databases/API_MySIRH_db",
+      "type": "mssql.azure",
+      "connectionId": "ConnectionStrings:NewConnection"
+    }
+  }
+}

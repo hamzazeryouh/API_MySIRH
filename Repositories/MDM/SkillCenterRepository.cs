@@ -43,7 +43,7 @@ namespace API_MySIRH.Repositories
 
         public async Task<SkillCenter> GetSkillCenter(int id)
         {
-            return  await _context.SkillCenters.FindAsync(id);
+            return  await _context.SkillCenters.FindAsync(id) ;
         }
 
         public async Task UpdateSkillCenter(int id, SkillCenter SkillCenter)
