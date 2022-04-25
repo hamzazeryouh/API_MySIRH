@@ -58,7 +58,7 @@ namespace API_MySIRH.Services
             Candidat.CVUrl = oldCandidat.CVUrl;
             Candidat.ImageUrl = oldCandidat.ImageUrl;
 
-            await this._CandidatRepository.UpdateCandidat(id, this._mapper.Map<Candidat>(Candidat));
+          await this._CandidatRepository.UpdateCandidat(id, this._mapper.Map<Candidat>(Candidat));
         }
         public async Task<IEnumerable<CandidatDTO>> ImportExcel(IFormFile Excel)
         {

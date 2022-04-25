@@ -6,6 +6,7 @@ using API_MySIRH.Repositories;
 using API_MySIRH.Repositories.MDM;
 using API_MySIRH.Services;
 using ApiMultiPartFormData;
+using AutoMapper;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
