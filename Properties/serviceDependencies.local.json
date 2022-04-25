@@ -1,23 +1,16 @@
 {
   "dependencies": {
+    "appInsights1": {
+      "type": "appInsights.sdk"
+    },
     "secrets1": {
       "type": "secrets.user"
     },
     "mssql1": {
       "secretStore": "LocalSecretsFile",
-      "type": "mssql.local",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/mysirh/databases/API_MySIRH_db",
+      "type": "mssql.azure",
       "connectionId": "ConnectionStrings:DefaultConnection"
-    },
-    "mssql2": {
-      "secretStore": "LocalSecretsFile",
-      "type": "mssql.local",
-      "connectionId": "ConnectionStrings:NewConnection"
-    },
-    "storage1": {
-      "secretStore": "LocalSecretsFile",
-      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourcegroups/[parameters('resourceGroupName')]/providers/Microsoft.Storage/storageAccounts/apimysirhstorage",
-      "type": "storage.azure",
-      "connectionId": "stokagemysirh"
     }
   }
 }

@@ -16,8 +16,9 @@ using Azure.Identity;
 var myAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
 
-//var keyVaultEndpoint = new Uri(Environment.GetEnvironmentVariable("VaultUri"));
-//builder.Configuration.AddAzureKeyVault(keyVaultEndpoint, new DefaultAzureCredential());
+var keyVaultEndpoint = new Uri(Environment.GetEnvironmentVariable("apiMYSIRH3"));
+builder.Configuration.AddAzureKeyVault(keyVaultEndpoint, new DefaultAzureCredential());
+
 
 // Logging config 
 builder.Logging.ClearProviders();
@@ -79,9 +80,15 @@ builder.Services.AddScoped<ITypeContratService, TypeContratService>();
 //DBContext Config 
 builder.Services.AddDbContext<DataContext>(options =>
 {
-   //options.UseSqlServer(builder.Configuration.GetConnectionString("NewConnection"));
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
+   
+    Console.WriteLine("*****************" + builder.Configuration.GetConnectionString("NewConnection"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("NewConnection"));
+    //options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
+    
 });
+
+
+
 
 //enable CORS
 builder.Services.AddCors(options =>
@@ -95,11 +102,8 @@ builder.Services.AddCors(options =>
             ;
         });
 });
-builder.Services.AddAzureClients(clientBuilder =>
-{
-    clientBuilder.AddBlobServiceClient(builder.Configuration["stokagemysirh:blob"], preferMsi: true);
-    clientBuilder.AddQueueServiceClient(builder.Configuration["stokagemysirh:queue"], preferMsi: true);
-});
+builder.Services.AddApplicationInsightsTelemetry();
+
 
 var app = builder.Build();
 
