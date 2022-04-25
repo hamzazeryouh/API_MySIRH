@@ -10,6 +10,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Azure;
 using Azure.Identity;
 
 var myAllowSpecificOrigins = "_myAllowSpecificOrigins";
@@ -35,7 +36,7 @@ builder.Services.AddControllers(options =>
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddSwaggerGen();
+
 
 builder.Services.Configure<FormOptions>(o => {
     o.ValueLengthLimit = int.MaxValue;
@@ -93,6 +94,11 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader()
             ;
         });
+});
+builder.Services.AddAzureClients(clientBuilder =>
+{
+    clientBuilder.AddBlobServiceClient(builder.Configuration["stokagemysirh:blob"], preferMsi: true);
+    clientBuilder.AddQueueServiceClient(builder.Configuration["stokagemysirh:queue"], preferMsi: true);
 });
 
 var app = builder.Build();
