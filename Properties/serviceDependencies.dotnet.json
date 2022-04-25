@@ -1,10 +1,16 @@
 {
   "dependencies": {
-    "mssql2": {
+    "secrets1": {
+      "secretStore": "AzureAppSettings",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.KeyVault/vaults/APIMySIRHvault",
+      "type": "secrets.keyVault",
+      "connectionId": "VaultUri"
+    },
+    "mssql1": {
       "secretStore": "AzureAppSettings",
       "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/mysirh/databases/MYSIRH",
       "type": "mssql.azure",
-      "connectionId": "ConnectionStrings:NewConnection"
+      "connectionId": "ConnectionStrings:DefaultConnection"
     }
   }
 }

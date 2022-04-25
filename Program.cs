@@ -10,9 +10,14 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Azure;
+using Azure.Identity;
 
 var myAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
+
+//var keyVaultEndpoint = new Uri(Environment.GetEnvironmentVariable("VaultUri"));
+//builder.Configuration.AddAzureKeyVault(keyVaultEndpoint, new DefaultAzureCredential());
 
 // Logging config 
 builder.Logging.ClearProviders();
@@ -89,6 +94,11 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader()
             ;
         });
+});
+builder.Services.AddAzureClients(clientBuilder =>
+{
+    clientBuilder.AddBlobServiceClient(builder.Configuration["stokagemysirh:blob"], preferMsi: true);
+    clientBuilder.AddQueueServiceClient(builder.Configuration["stokagemysirh:queue"], preferMsi: true);
 });
 
 var app = builder.Build();
