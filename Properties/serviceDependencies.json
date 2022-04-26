@@ -1,28 +1,3 @@
 {
-  "dependencies": {
-    "storage1": {
-      "ignored": "true",
-      "suggestion": "true",
-      "type": "storage",
-      "connectionId": ""
-    },
-    "mssql2": {
-      "ignored": "true",
-      "suggestion": "true",
-      "type": "mssql",
-      "connectionId": "ConnectionStrings:NewConnection"
-    },
-    "appInsights1": {
-      "type": "appInsights",
-      "connectionId": "APPLICATIONINSIGHTS_CONNECTION_STRING"
-    },
-    "mssql1": {
-      "type": "mssql",
-      "connectionId": "ConnectionStrings:DefaultConnection"
-    },
-    "secrets1": {
-      "type": "secrets",
-      "connectionId": "apiMYSIRH3"
-    }
-  }
+  "dependencies": {}
 }
