@@ -19,9 +19,10 @@ namespace API_MySIRH.Data
         public DbSet<Candidat> Candidats { get; set; } = null!;
         public DbSet<TypeContrat> TypeContrats { get; set; } = null!;
 
+        protected override void OnModelCreating(ModelBuilder  modelBuilder)
+        {
 
-
-
+        }
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             

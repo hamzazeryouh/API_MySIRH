@@ -17,8 +17,8 @@ namespace API_MySIRH.Repositories.MDM
 
         public async Task<PosteNiveau> AddPosteNiveau(PosteNiveau PosteNiveau)
         {
-            await this._context.Niveaux.AddAsync(PosteNiveau);
-            await this._context.SaveChangesAsync();
+            await _context.Niveaux.AddAsync(PosteNiveau);
+            await _context.SaveChangesAsync();
             return PosteNiveau;
         }
 

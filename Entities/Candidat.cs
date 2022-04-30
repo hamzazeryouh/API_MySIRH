@@ -26,10 +26,7 @@ namespace API_MySIRH.Entities
         public string? ImageUrl { get; set; }
 
         public string? CVUrl { get; set; }
-
-
-
-
+        public string? Evaluation { get; set; }
 
 
     }

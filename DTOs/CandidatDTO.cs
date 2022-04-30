@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using API_MySIRH.Entities.MDM;
+using System.ComponentModel.DataAnnotations;
 
 namespace API_MySIRH.DTOs
 {
@@ -34,5 +35,7 @@ namespace API_MySIRH.DTOs
         public string? ImageUrl { get; set; }
 
         public string? CVUrl { get; set; }
+
+        public dynamic? Evaluation { get; set; }
     }
 }

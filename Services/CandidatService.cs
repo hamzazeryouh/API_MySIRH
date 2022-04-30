@@ -4,10 +4,12 @@ namespace API_MySIRH.Services
 {
     using API_MySIRH.DTOs;
     using API_MySIRH.Entities;
+    using API_MySIRH.Entities.MDM;
     using API_MySIRH.Interfaces;
     using AutoMapper;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
+    using Newtonsoft.Json;
     using OfficeOpenXml;
     using OfficeOpenXml.Style;
     using System.Drawing;
@@ -47,9 +49,17 @@ namespace API_MySIRH.Services
             //var query = this._CandidatRepository.GetCandidats().ProjectTo<CandidatDTO>(_mapper.ConfigurationProvider).AsNoTracking();
             ////var mapping = this._mapper.Map<PagedList<Candidat>, PagedList<CandidatDTO>>(collabs);
             //return await PagedList<CandidatDTO>.CreateAsync(query, filterParams.pageNumber, filterParams.pageSize);
-
+            IEnumerable<CandidatDTO> candidatDTOs= new List<CandidatDTO>();
             var result = await _CandidatRepository.GetCandidats();
-            return _mapper.Map<IEnumerable<Candidat>, IEnumerable<CandidatDTO>>(result);
+            foreach (var resultItem in result)
+            {
+                var CandidatDTO=new CandidatDTO();
+
+               
+            }
+             return _mapper.Map<IEnumerable<Candidat>, IEnumerable<CandidatDTO>>(result);
+            //var data= JsonConvert.DeserializeObject<IEnumerable<CandidatDTO>>(JsonConvert.SerializeObject(result));
+            //return JsonConvert.DeserializeObject<IEnumerable<CandidatDTO>>(JsonConvert.SerializeObject(result));
         }
         public async Task UpdateCandidat(int id, CandidatDTO Candidat)
         {

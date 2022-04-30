@@ -1,12 +1,8 @@
 {
   "dependencies": {
-    "appInsights1": {
+    "mssql2": {
       "ignored": "true",
       "suggestion": "true",
-      "type": "appInsights",
-      "connectionId": ""
-    },
-    "mssql1": {
       "type": "mssql",
       "connectionId": "ConnectionStrings:NewConnection"
     },
@@ -16,9 +12,11 @@
       "type": "storage",
       "connectionId": ""
     },
-    "secrets1": {
-      "type": "secrets",
-      "connectionId": "VaultUri"
+    "mssql1": {
+      "ignored": "true",
+      "suggestion": "true",
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:DefaultConnection"
     }
   }
 }

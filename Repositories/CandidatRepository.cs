@@ -17,6 +17,48 @@ namespace API_MySIRH.Repositories
 
         public async Task<Candidat> AddCandidat(Candidat Candidat)
         {
+            var text = @"
+{	
+  ""title "" :""Infos"",
+   ""field"":[
+
+     {
+         ""dispayname"":""Nom Prenom"",
+	      ""value"":""hamza zeryouh"",
+	      ""subField"":
+	       {
+            ""title "" :""Infos"",
+			 ""field"":[
+
+               {
+                        ""dispayname"":""Nom"",
+	            ""value"":""hamza"",
+			   	""commnter"":"""",
+	   	       ""requerd"":false,
+	           ""type"":""text""
+
+                },
+			    {
+                ""dispayname"":""Prenom"",
+	            ""value"":""zeryouh"",
+			   	""commnter"":"""",
+	   	       ""requerd"":false,
+	           ""type"":""text""
+
+                }
+			 ]
+	        },
+		 ""commnter"":"""",
+		 ""requerd"":false,
+		 ""type"":null,
+       }
+       ],
+      
+
+     		
+   }
+    }";
+            Candidat.Evaluation = text;
             await this._context.Candidats.AddAsync(Candidat);
             await this._context.SaveChangesAsync();
             return Candidat;
@@ -37,7 +79,7 @@ namespace API_MySIRH.Repositories
 
         public async Task<IEnumerable<Candidat>> GetCandidats()
         {
-            return await this._context.Candidats.ToListAsync();
+           return  await this._context.Candidats.ToListAsync();
         }
 
         public async Task<Candidat> GetCandidat(int id)

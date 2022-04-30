@@ -16,6 +16,9 @@ using Azure.Identity;
 var myAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
 
+//var keyVaultEndpoint = new Uri(Environment.GetEnvironmentVariable("VaultUri"));
+//builder.Configuration.AddAzureKeyVault(keyVaultEndpoint, new DefaultAzureCredential());
+
 //var keyVaultEndpoint = new Uri(Environment.GetEnvironmentVariable("apiMYSIRH3"));
 //builder.Configuration.AddAzureKeyVault(keyVaultEndpoint, new DefaultAzureCredential());
 
@@ -80,10 +83,9 @@ builder.Services.AddScoped<ITypeContratService, TypeContratService>();
 //DBContext Config 
 builder.Services.AddDbContext<DataContext>(options =>
 {
-   
-    Console.WriteLine("*****************" + builder.Configuration.GetConnectionString("NewConnection"));
     options.UseSqlServer(builder.Configuration.GetConnectionString("NewConnection"));
-    //options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
+   // options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
+   // options.UseSqlite("Data source=Data/mySIRH.db");
     
 });
 
