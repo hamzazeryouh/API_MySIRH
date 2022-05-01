@@ -7,7 +7,7 @@ namespace API_MySIRH.Interfaces.InterfaceServices.Base
     /// an interface that every service should implement
     /// used for sharing common functionalities between all services 
     /// </summary>
-    public interface IBaseService<TEntity, Model>
+    public interface IBaseService<TEntity,TKey, Model>
         where TEntity : class
     {
         /// <summary>
@@ -30,7 +30,7 @@ namespace API_MySIRH.Interfaces.InterfaceServices.Base
         /// </summary>
         /// <param name="id">the id of the <see cref="TEntity"/> to retrieve</param>
         /// <returns>the <see cref="Model"/> result</returns>
-        Task<Result<Model>> GetByIdAsync(int id);
+        Task<Result<Model>> GetByIdAsync(TKey id);
 
         /// <summary>
         /// create <see cref="TEntity"/> with the given values
@@ -45,13 +45,13 @@ namespace API_MySIRH.Interfaces.InterfaceServices.Base
         /// <param name="id"></param>
         /// <param name="updateModel"></param>
         /// <returns></returns>
-        Task<Result<Model>> UpdateAsync(int id, Model updateModel);
+        Task<Result<Model>> UpdateAsync(TKey TKey, Model updateModel);
 
         /// <summary>
         /// delete <see cref="TEntity"/> with the given id
         /// </summary>
         /// <param name="id">the id of the bank account to be deleted</param>
         /// <returns>a result instant</returns>
-        Task<Result> DeleteAsync(int id);
+        Task<Result> DeleteAsync(TKey id);
     }
 }

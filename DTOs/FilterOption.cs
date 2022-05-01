@@ -9,16 +9,6 @@ namespace API_MySIRH.DTOs
         /// </summary>
         public class FilterOption
         {
-            /// <summary>
-            /// the search query to search with it
-            /// </summary>
-            private string _searchQuery;
-
-            public string SearchQuery
-            {
-                get { return _searchQuery; }
-                set { _searchQuery = (value ?? "").Trim().ToLower(); }
-            }
 
             /// <summary>
             /// the index of the page to retrieve

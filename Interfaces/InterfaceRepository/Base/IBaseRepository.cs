@@ -149,6 +149,42 @@ namespace API_MySIRH.Interfaces
         /// <param name="predicate">the predicate to use to get the result</param>
         /// <returns>a result of a given entity</returns>
         Task<TEntity> GetSingleAsync(Expression<Func<TEntity, bool>> predicate);
+
+        /// <summary>
+
+    }
+
+
+
+    public interface IBaseRepository<TEntity, TKey> : IBaseRepository<TEntity>
+    where TEntity : class
+    {
+        /// delete the entity with the given id
+        /// </summary>
+        /// <param name="id">the id of the entity to be deleted</param>
+        /// <returns>an operation result</returns>
+        Task<TEntity> DeleteAsync(TKey id);
+
+        /// <summary>
+        /// check if the entity with the given id is exist
+        /// </summary>
+        /// <param name="id">the id of the entity</param>
+        /// <returns>true if exist</returns>
+        Task<bool> IsExistAsync(TKey id, IDataRequest<TEntity> request = null);
+
+        /// <summary>
+        /// get the model with the given id
+        /// </summary>
+        /// <param name="modelId">the id of the model to get</param>
+        /// <returns>the model</returns>
+        Task<TEntity> GetAsync(TKey modelId, IDataRequest<TEntity> request = null);
+
+        /// <summary>
+        /// get the keys of Entities that matches the request
+        /// </summary>
+        /// <returns>list of keys</returns>
+        Task<IEnumerable<TKey>> GetKeysAsync(IDataRequest<TEntity> request = null);
+
     }
 
 }

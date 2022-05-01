@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API_MySIRH.Data
 {
-    public class DataContext : DbContext
+    public class DataContext : DbContext, IDataSource
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
         public DbSet<ToDoItem> ToDoItems { get; set; } = null!;

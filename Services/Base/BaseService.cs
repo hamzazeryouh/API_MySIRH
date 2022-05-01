@@ -10,20 +10,15 @@ using System.Linq.Expressions;
 
 namespace API_MySIRH.Services
 {
-    public class BaseService
-    {
-    }
-
-
-
 
     /// <summary>
     /// the base interface for all DataServices
     /// </summary>
-    public class BaseService<TEntity, TModel> : IBaseService<TEntity, TModel>
-        where TEntity : class
+    public class BaseService<TEntity,TKey, TModel> : IBaseService<TEntity, TKey, TModel>
+        where TEntity : class, IEntity<TKey>
     {
-        protected readonly IBaseRepository<TEntity> _dataAccess;
+
+        protected readonly IBaseRepository<TEntity, TKey> _dataAccess;
         protected readonly IDataRequestBuilder<TEntity> _dataRequestBuilder;
         protected readonly IUnitOfWork _unitOfWork;
         protected readonly IMapper _mapper;
@@ -34,7 +29,7 @@ namespace API_MySIRH.Services
            IUnitOfWork unitOfWork,
            IMapper mapper)
         {
-            _dataAccess = unitOfWork.BaseRepository<TEntity>();
+            _dataAccess = unitOfWork.BaseRepository<TEntity, TKey>();
             _dataRequestBuilder = dataRequestBuilder;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -60,7 +55,7 @@ namespace API_MySIRH.Services
             return Result<TModel>.Success(data, $"{_entityName} added successfully");
         }
 
-        public virtual async Task<Result> DeleteAsync(int id)
+        public virtual async Task<Result> DeleteAsync(TKey id)
         {
             await BeforeDeleteEntity(id);
             var entity = await _dataAccess.DeleteAsync(id);
@@ -98,7 +93,7 @@ namespace API_MySIRH.Services
             return Result<IEnumerable<TModel>>.Success(data);
         }
 
-        public async Task<Result<TModel>> UpdateAsync(int id, TModel updateModel)
+        public async Task<Result<TModel>> UpdateAsync(TKey id, TModel updateModel)
         {
             var entity = await GetEntityByIdAsync(id);
 
@@ -115,7 +110,7 @@ namespace API_MySIRH.Services
             return Result<TModel>.Success(data, $"{_entityName} updated successfully");
         }
 
-        public async Task<Result<TModel>> GetByIdAsync(int id)
+        public async Task<Result<TModel>> GetByIdAsync(TKey id)
         {
             TEntity entity = await GetEntityByIdAsyncWithRelatedEntity(id);
             var data = _mapper.Map<TModel>(entity);
@@ -146,7 +141,7 @@ namespace API_MySIRH.Services
         protected virtual Task AfterGetByIdEntity(TEntity entity, TModel model)
             => Task.CompletedTask;
 
-        protected virtual Task BeforeDeleteEntity(int id)
+        protected virtual Task BeforeDeleteEntity(TKey id)
             => Task.CompletedTask;
 
         protected virtual Task AfterDeleteEntity(TEntity entity)
@@ -209,7 +204,7 @@ namespace API_MySIRH.Services
 
         #region protected
 
-        protected async Task<TEntity> GetEntityByIdAsyncWithRelatedEntity(int id)
+        protected async Task<TEntity> GetEntityByIdAsyncWithRelatedEntity(TKey id)
         {
             var request = BuildIncludeGetById();
             var entity = await _dataAccess.GetAsync(id, request);
@@ -220,7 +215,7 @@ namespace API_MySIRH.Services
             return entity;
         }
 
-        protected async Task<TEntity> GetEntityByIdAsync(int id)
+        protected async Task<TEntity> GetEntityByIdAsync(TKey id)
         {
             var entity = await _dataAccess.GetAsync(id);
 

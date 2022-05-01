@@ -19,7 +19,7 @@ namespace API_MySIRH.Repositories.BaseRepository
     /// </summary>
     /// <typeparam name="TEntity">the entity type</typeparam>
     public class BaseRepository<TEntity> : IBaseRepository<TEntity>
-        where TEntity : class
+        where TEntity : class,IEntity
     {
         /// <summary>
         /// the context
@@ -51,7 +51,7 @@ namespace API_MySIRH.Repositories.BaseRepository
         {
             _context = context;
             _entity = _context.Set<TEntity>();
-            _logger = loggerFactory.CreateLogger($"DataAccess.{_nameEntity}");
+            _logger = loggerFactory.CreateLogger($"BaseRepository.{_nameEntity}");
         }
 
         #region Data manipulation operations
@@ -378,20 +378,36 @@ namespace API_MySIRH.Repositories.BaseRepository
         protected IQueryable<TEntity> ExecSQL(string sql, params object[] parameters)
             => _entity.FromSqlRaw(sql, parameters);
 
+
+
         #endregion
+
+
+
+
+
+    
+
+
     }
 
-    /// <summary>
-    /// an abstract implementation of the IDataSource interface
-    /// </summary>
-    /// <typeparam name="TEntity">the entity type</typeparam>
-    /// <typeparam name="TKey">the entity key type</typeparam>
-    public class BaseRepository<TEntity, TKey> : BaseRepository<TEntity>, IBaseRepository<TEntity>
-        where TEntity : class, IEntity
+
+
+    public class BaseRepository<TEntity, TKey> : BaseRepository<TEntity>, IBaseRepository<TEntity, TKey>
+       where TEntity : class, IEntity
     {
-        protected BaseRepository(IDataSource context, ILoggerFactory loggerFactory)
-            : base(context, loggerFactory)
-        { }
+        protected BaseRepository(IDataSource context, ILoggerFactory loggerFactory) : base(context, loggerFactory)
+        {
+        }
+
+
+        /// <summary>
+        /// check if the entity with the given id is exist
+        /// </summary>
+        /// <param name="entityId">the entity id</param>
+        /// <returns>true if exist, false if not</returns>
+        public async Task<bool> IsExistAsync(TKey entityId, IDataRequest<TEntity> request = null)
+            => await Get(request).AnyAsync(e => e.Id.Equals(entityId));
 
         /// <summary>
         /// delete the entity with the given id
@@ -408,14 +424,6 @@ namespace API_MySIRH.Repositories.BaseRepository
             _entity.RemoveRange(entity);
             return entity;
         }
-
-        /// <summary>
-        /// check if the entity with the given id is exist
-        /// </summary>
-        /// <param name="entityId">the entity id</param>
-        /// <returns>true if exist, false if not</returns>
-        public async Task<bool> IsExistAsync(TKey entityId, IDataRequest<TEntity> request = null)
-            => await Get(request).AnyAsync(e => e.Id.Equals(entityId));
 
         /// <summary>
         /// get the entity with the specified id
@@ -461,7 +469,11 @@ namespace API_MySIRH.Repositories.BaseRepository
                 return default;
             }
         }
+
     }
+
+
+
 
 }
 

@@ -8,16 +8,32 @@ using System.Threading.Tasks;
 /// </summary>Data
 public interface IUnitOfWork
 {
+
     /// <summary>
     /// Returns the repository for the provided type.
     /// </summary>
     /// <typeparam name="TEntity">The database entity type.</typeparam>
     /// <returns>Returns <see cref="DataAccess{TEntity}"/>.</returns>
     IBaseRepository<TEntity> BaseRepository<TEntity>()
-        where TEntity : class;
+        where TEntity : class, IEntity;
+
+    /// <summary>
+    /// Returns the repository for the provided type.
+    /// </summary>
+    /// <typeparam name="TEntity">The database entity type.</typeparam>
+    /// <typeparam name="TKey">The key entity type.</typeparam>
+    /// <returns>Returns <see cref="DataAccess{TEntity}"/>.</returns>
+    IBaseRepository<TEntity, TKey> BaseRepository<TEntity, TKey>()
+        where TEntity : class, IEntity<TKey>;
 
 
     ICandidatRepository CandidatRepository { get;  }
+
+    IEvaluationRepository EvaluationRepository{ get; }
+
+    ICommenterRepository CommenterRepository { get; }
+    ITemplateRepository TemplateRepository { get; }
+
 
 
     /// <summary>

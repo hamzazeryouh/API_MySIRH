@@ -1,7 +1,6 @@
 ﻿namespace API_MySIRH.Data
 {
     using API_MySIRH.Enums;
-    using API_MySIRH.Implementations;
     using Microsoft.EntityFrameworkCore.Query;
     using System;
     using System.Linq;

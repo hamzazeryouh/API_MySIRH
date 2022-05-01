@@ -1,6 +1,6 @@
-﻿namespace API_MySIRH.Entities.Evaluation
+﻿namespace API_MySIRH.Entities
 {
-    public class Commenter:EntityBase
+    public class Commenter:EntityBase<int>
     {
        public string? Commente { get; set; }
     }

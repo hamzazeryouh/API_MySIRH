@@ -12,6 +12,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Azure;
 using Azure.Identity;
+using API_MySIRH.Services.EvaluationService;
+using API_MySIRH.Presistence;
 
 var myAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
@@ -58,7 +60,11 @@ builder.Services.AddScoped<ICollaborateurRepository, CollaborateurRepository>();
 builder.Services.AddScoped<ICollaborateurService, CollaborateurService>();
 builder.Services.AddScoped<ICandidatRepository, CandidatRepository>();
 builder.Services.AddScoped<ICandidatService, CandidatService>();
+builder.Services.AddScoped<IEvaluationService, EvaluationService>();
 
+
+builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
+builder.Services.AddSingleton(typeof(IDataRequestBuilder<>), typeof(DataRequestBuilder<>));
 
 
 // Add Poste Services and Repository inject
