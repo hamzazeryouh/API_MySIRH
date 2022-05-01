@@ -9,10 +9,18 @@ namespace API_MySIRH.Repositories
     {
         private readonly DataContext _context;
 
-
-        public CandidatRepository(DataContext context)
+        /// <summary>
+        /// the logger instance
+        /// </summary>
+        protected readonly ILogger _logger;
+        /// <summary>
+        /// the name of entity type
+        /// </summary>
+        protected readonly string _nameEntity = nameof(Candidat);
+        public CandidatRepository(DataContext context, ILoggerFactory loggerFactory)
         {
-            this._context = context;
+               _context = context;
+            _logger = loggerFactory.CreateLogger($"CandidatRepository.{_nameEntity}");
         }
 
         public async Task<Candidat> AddCandidat(Candidat Candidat)

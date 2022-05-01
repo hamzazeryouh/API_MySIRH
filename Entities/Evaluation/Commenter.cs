@@ -2,6 +2,6 @@
 {
     public class Commenter:EntityBase
     {
-
+       public string? Commente { get; set; }
     }
 }

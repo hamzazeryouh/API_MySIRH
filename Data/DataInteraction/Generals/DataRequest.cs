@@ -4,7 +4,7 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace API_MySIRH.Implementations
+namespace API_MySIRH.Data
 {
     /// <summary>
     /// the data request class for querying data, to create an instant of this class 
@@ -48,7 +48,7 @@ namespace API_MySIRH.Implementations
     /// <typeparam name="TOut">the type of the out entity</typeparam>
     public class DataRequest<TEntity, TOut> : DataRequest<TEntity>,
         IDataRequest<TEntity, TOut>
-        where TEntity : class, IEntity
+        where TEntity : class
     {
         private DataRequest() { }
 

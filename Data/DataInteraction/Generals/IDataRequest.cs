@@ -1,4 +1,4 @@
-﻿namespace API_MySIRH.Application.Data
+﻿namespace API_MySIRH.Data
 {
     using Microsoft.EntityFrameworkCore.Query;
     using System;
